@@ -1,19 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
 import {client} from "@/utils/fethData";
-import Breed from "@/types/Breed";
 import SpyCatData from "@/types/SpyCatData";
-import CatSpy from "@/types/types";
+import CatSpy from "@/types/CatSpy";
 
 
 
 interface AgentListProps {
     catSpyList: CatSpy[];
     setCatSpyList: React.Dispatch<React.SetStateAction<CatSpy[]>>;
-    catSpyBreed : Breed[]
 }
 
 
-export default function AgentList({ catSpyList, setCatSpyList , catSpyBreed } : AgentListProps) {
+export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProps) {
     const [ediTableId, setEditableId] = useState<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [editSalary, setEditSalary] = useState<string | number | null>(null);
@@ -25,13 +23,7 @@ export default function AgentList({ catSpyList, setCatSpyList , catSpyBreed } : 
         }
     }, [ediTableId]);
 
-    const breedMap = React.useMemo(() => {
-        const map: Record<string | number, string> = {};
-        catSpyBreed.forEach((breed) => {
-            map[breed.id] = breed.name;
-        });
-        return map;
-    }, [catSpyBreed]);
+
 
 
     function handleSave(objectId : number , editData : SpyCatData) {
@@ -53,7 +45,7 @@ export default function AgentList({ catSpyList, setCatSpyList , catSpyBreed } : 
             });
     }
 
-
+    console.log()
     return (
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -114,7 +106,7 @@ export default function AgentList({ catSpyList, setCatSpyList , catSpyBreed } : 
                         {spyCat.years_of_experience}
                     </td>
                     <td className="px-6 py-4 text-center">
-                        {breedMap[spyCat.breed]}
+                        {spyCat.breed}
                     </td>
                     <td className="px-6 py-4 text-right">
                         <a
