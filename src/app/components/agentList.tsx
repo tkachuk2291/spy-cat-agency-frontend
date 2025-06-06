@@ -89,12 +89,12 @@ export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProp
                                 value={editSalary ?? ''}
                                 onChange={(e) => setEditSalary(e.target.value)}
                                 onBlur={(e) => {
-                                    handleSave(spyCat.id, {salary: +e.target.value});
+                                    handleSave(spyCat.id!, {salary: +e.target.value});
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                         const target = e.target as HTMLInputElement;
-                                        handleSave(spyCat.id, { salary: +target.value });
+                                        handleSave(spyCat.id!, { salary: +target.value });
                                     }
                                 }}
                             />
@@ -122,7 +122,7 @@ export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProp
                             Edit
                         </a>
                         <a onClick={() => {
-                            handleDelete(spyCat.id);
+                            handleDelete(spyCat.id!);
                         }} href="#" className="font-medium text-red-600 dark:text-blue-500 hover:underline">Delete</a>
                     </td>
 
