@@ -8,10 +8,13 @@ import CatSpy from "@/types/CatSpy";
 interface AgentListProps {
     catSpyList: CatSpy[];
     setCatSpyList: React.Dispatch<React.SetStateAction<CatSpy[]>>;
+    error : string | null,
+    resetError: (setError  : React.Dispatch<React.SetStateAction<string | null>>) => void;
+
 }
 
 
-export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProps) {
+export default function AgentList({ catSpyList, setCatSpyList , resetError } : AgentListProps) {
     const [ediTableId, setEditableId] = useState<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [editSalary, setEditSalary] = useState<string | number | null>(null);
@@ -23,6 +26,7 @@ export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProp
         }
     }, [ediTableId]);
 
+    const [listError, setListError] = useState<string | null>(null)
 
 
 
@@ -32,7 +36,8 @@ export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProp
             setEditableId(null);
         })
             .catch((error) => {
-                console.error("Error while save:", error);
+                setListError(`Error while update, Details: ${error}`)
+                resetError(setListError)
             });
     }
 
@@ -41,12 +46,19 @@ export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProp
             setCatSpyList((prevState) =>prevState.filter((cat) => cat.id !== objectId ) );
         })
             .catch((error) => {
-                console.error("Error while save:", error);
+                setListError(`Error while delete, Details: ${error}`)
+                resetError(setListError)
             });
     }
 
-    console.log()
+
     return (
+
+    <>
+        {listError && (
+            <div className='bg-red-700 text-white p-10 text-center'>{listError}</div>
+        )}
+
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -130,5 +142,6 @@ export default function AgentList({ catSpyList, setCatSpyList  } : AgentListProp
             ))}
             </tbody>
         </table>
+    </>
     )
 }

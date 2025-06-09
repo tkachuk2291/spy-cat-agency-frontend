@@ -1,4 +1,4 @@
-import React, {JSX} from "react";
+import React, {JSX, useState} from "react";
 import {client} from "@/utils/fethData";
 import CatSpy from "@/types/CatSpy";
 import FormData from "@/types/FormData";
@@ -7,6 +7,8 @@ interface RegisterFormProps {
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
     setCatSpyList: React.Dispatch<React.SetStateAction<CatSpy[]>>;
     formData: FormData;
+    resetError: (setError : React.Dispatch<React.SetStateAction<string | null>>) => void;
+
 }
 
 export default function RegisterForm(
@@ -14,10 +16,16 @@ export default function RegisterForm(
                                          setFormData,
                                          setCatSpyList,
                                          formData,
+                                        resetError
                                      }: RegisterFormProps): JSX.Element {
 
 
+    const [registerError, setRegisterError] = useState<string | null>(null)
+
+
     function handlePost(data : CatSpy) {
+
+
         const preparedData: CatSpy= {
             id : data.id,
             name: data.name,
@@ -36,23 +44,33 @@ export default function RegisterForm(
             });
         })
             .catch((error) => {
-                console.error("Error while save:", error);
+                setRegisterError(`Error while save, Details: ${error}`)
+                resetError(setRegisterError)
             });
     }
+
 
     return (
 
         <>
             <h3 className={'text-purple-900 text-lg text-center border-4'}>Add new Agent</h3>
+            {registerError && (
+                <div className='bg-red-700 text-white p-10 text-center'>{registerError}</div>
+            )}
             <form className="min-w-[500px] flex flex-col m-auto pb-6" onSubmit={(event) => {
                 event.preventDefault()
                 handlePost(formData)
             }
             }>
+
+
                 <div className="mb-5">
                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Agent
                         Name</label>
-                    <input onChange={(e) => setFormData(prev => ({...prev, name: e.target.value}))} type="form" id="name"
+                    <input onChange={(e) =>{
+                        setFormData(prev => ({...prev, name: e.target.value}))
+                    }} type="form"
+                           id="name"
                            className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
                            placeholder="write  agent name"
                            value={formData.name}
@@ -60,7 +78,8 @@ export default function RegisterForm(
 
                 </div>
                 <div className="mb-5">
-                    <label htmlFor="years" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">years of
+                    <label htmlFor="years" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">years
+                        of
                         experience</label>
                     <input
                         onChange={(e) => setFormData(prev => ({...prev, years_of_experience: e.target.value}))}

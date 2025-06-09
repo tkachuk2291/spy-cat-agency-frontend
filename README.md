@@ -22,7 +22,14 @@ npm run dev
 
 http://localhost:3000
 
-## 5. Please note that the backend is located on Django. Initially, you need to enable the backend server with port 8000.
+
+## 5. Please note that there is a validation for the breed field. You can give a breed exclusively from the API (https://api.thecatapi.com/v1/breeds).
+### Example:
+### British Longhair
+### Burmilla
+### Chantilly-Tiffany
+
+## 6. Please note that the backend is located on Django. Initially, you need to enable the backend server with port 8000.
 
 Example:
 
